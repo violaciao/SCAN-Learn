@@ -12,19 +12,15 @@ import torch.nn as nn
 from torch.autograd import Variable
 from torch import optim
 import torch.nn.functional as F
+from config import *
 
-#TODO 
-# 1. check if exists "saved_models" in Config
+os.chdir(WORKING_DIR)
 
 use_cuda = torch.cuda.is_available()
 print("GPU availability is:", use_cuda)
 
-
 SOS_token = 0
 EOS_token = 1
-MAX_LENGTH = 50
-model_version = "004"
-
 
 class Lang:
     def __init__(self, name):
@@ -52,7 +48,7 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    lines = open('{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize
@@ -87,7 +83,7 @@ input_lang, output_lang, pairs = prepareData('in', 'out', True)
 print(random.choice(pairs))
 
 
-with open('embedding_raw.pkl', 'rb') as handle:
+with open('data/embedding_raw.pkl', 'rb') as handle:
     b = pickle.load(handle)
 
 pretrained_emb = np.zeros((15, 50))
@@ -278,13 +274,13 @@ def timeSince(since, percent):
 
 def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
-    plot_losses = []
+    # plot_losses = []
     print_loss_total = 0  # Reset every print_every
-    plot_loss_total = 0  # Reset every plot_every
+    # plot_loss_total = 0  # Reset every plot_every
 
-    if os.path.exists("saved_models/encoder_" + model_version):
-        encoder = torch.load("saved_models/encoder_" + model_version)
-        decoder = torch.load("saved_models/decoder_" + model_version)
+    if os.path.exists("saved_models/encoder_" + MODEL_VERSION):
+        encoder = torch.load("saved_models/encoder_" + MODEL_VERSION)
+        decoder = torch.load("saved_models/decoder_" + MODEL_VERSION)
 
     parameters = filter(lambda p: p.requires_grad, encoder.parameters())
     encoder_optimizer = optim.SGD(parameters, lr=learning_rate)
@@ -301,7 +297,7 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
         loss = train(input_variable, target_variable, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
         print_loss_total += loss
-        plot_loss_total += loss
+        # plot_loss_total += loss
 
         if iter % print_every == 0:
             print_loss_avg = print_loss_total / print_every
@@ -309,14 +305,14 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
                                          iter, iter / n_iters * 100, print_loss_avg))
 
-        if iter % plot_every == 0:
-            plot_loss_avg = plot_loss_total / plot_every
-            plot_losses.append(plot_loss_avg)
-            plot_loss_total = 0
+        # if iter % plot_every == 0:
+        #     plot_loss_avg = plot_loss_total / plot_every
+        #     plot_losses.append(plot_loss_avg)
+        #     plot_loss_total = 0
 
-    with open("saved_models/encoder_" + model_version, "wb") as f:
+    with open("saved_models/encoder_" + MODEL_VERSION, "wb") as f:
        torch.save(encoder, f)
-    with open("saved_models/decoder_" + model_version, "wb") as f:
+    with open("saved_models/decoder_" + MODEL_VERSION, "wb") as f:
        torch.save(decoder, f)
 
     # showPlot(plot_losses)
@@ -338,6 +334,11 @@ def showPlot(points):
 
 
 def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
+
+    if os.path.exists("saved_models/encoder_" + MODEL_VERSION):
+        encoder = torch.load("saved_models/encoder_" + MODEL_VERSION)
+        decoder = torch.load("saved_models/decoder_" + MODEL_VERSION)
+        
     input_variable = variableFromSentence(input_lang, sentence)
     input_length = input_variable.size()[0]
     encoder_hidden = encoder.initHidden()
@@ -397,5 +398,13 @@ if use_cuda:
     encoder1 = encoder1.cuda()
     attn_decoder1 = attn_decoder1.cuda()
 
-trainIters(encoder1, attn_decoder1, 50000, print_every=500, learning_rate=0.01)
+trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=5, learning_rate=LEARNING_RATE)
+
+# d_w, d_a = evaluate(encoder=encoder1, 
+#                     decoder=attn_decoder1, 
+#                     sentence=TEST_SENTENCE, 
+#                     max_length=MAX_LENGTH)
+# print('decoded sentence:', d_w)
+# print('decoded attention:', d_a)
+
 
