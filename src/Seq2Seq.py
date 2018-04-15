@@ -5,12 +5,15 @@ import string
 import re
 import os
 import random
-
+import pickle
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
 from torch import optim
 import torch.nn.functional as F
+from config import *
+
+os.chdir(WORKING_DIR)
 
 use_cuda = torch.cuda.is_available()
 print("GPU availability is:", use_cuda)
@@ -18,7 +21,7 @@ print("GPU availability is:", use_cuda)
 
 SOS_token = 0
 EOS_token = 1
-MAX_LENGTH = 100
+MAX_LENGTH = 50
 
 
 class Lang:
@@ -47,7 +50,7 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    lines = open('data/processed/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize
@@ -82,6 +85,18 @@ def prepareData(lang1, lang2, reverse=False):
 input_lang, output_lang, pairs = prepareData('in', 'out', True)
 print(random.choice(pairs))
 
+
+with open('data/embedding_raw.pkl', 'rb') as handle:
+    b = pickle.load(handle)
+
+pretrained_emb = np.zeros((15, 50))
+for k, v in input_lang.index2word.items():
+    if v == 'SOS':
+        pretrained_emb[k] = np.zeros(50)
+    elif v == 'EOS':
+        pretrained_emb[k] = b['.']
+    else:
+        pretrained_emb[k] = b[v]
 
 
 ## Language Model
@@ -273,9 +288,9 @@ def timeSince(since, percent):
 
 def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
-    plot_losses = []
+    # plot_losses = []
     print_loss_total = 0  # Reset every print_every
-    plot_loss_total = 0  # Reset every plot_every
+    # plot_loss_total = 0  # Reset every plot_every
 
     if os.path.exists("saved_models/encoder_000"):
         encoder = torch.load("saved_models/encoder_000")
@@ -295,7 +310,7 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
         loss = train(input_variable, target_variable, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
         print_loss_total += loss
-        plot_loss_total += loss
+        # plot_loss_total += loss
 
         if iter % print_every == 0:
             print_loss_avg = print_loss_total / print_every
@@ -303,17 +318,17 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
                                          iter, iter / n_iters * 100, print_loss_avg))
 
-        if iter % plot_every == 0:
-            plot_loss_avg = plot_loss_total / plot_every
-            plot_losses.append(plot_loss_avg)
-            plot_loss_total = 0
+        # if iter % plot_every == 0:
+        #     plot_loss_avg = plot_loss_total / plot_every
+        #     plot_losses.append(plot_loss_avg)
+        #     plot_loss_total = 0
 
     with open("saved_models/encoder_000", "wb") as f:
        torch.save(encoder, f)
     with open("saved_models/decoder_000", "wb") as f:
        torch.save(decoder, f)
 
-    showPlot(plot_losses)
+    # showPlot(plot_losses)
 
 
 import matplotlib.pyplot as plt
@@ -391,5 +406,5 @@ if use_cuda:
     encoder1 = encoder1.cuda()
     attn_decoder1 = attn_decoder1.cuda()
 
-trainIters(encoder1, attn_decoder1, 75000, print_every=5000)
+trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=100, learning_rate=LEARNING_RATE)
 
