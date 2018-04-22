@@ -49,7 +49,7 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
+    lines = open('data/processed/train-{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize
@@ -108,7 +108,6 @@ class EncoderRNN(nn.Module):
         self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
         self.embedding.weight.requires_grad = False
 
-        # self.gru = nn.GRU(hidden_size, hidden_size)
         self.gru = getattr(nn, model_type)(hidden_size, hidden_size, bidirectional=False)
 
     def forward(self, input, hidden):
@@ -139,11 +138,6 @@ class AttnDecoderRNN(nn.Module):
         self.dropout = nn.Dropout(self.dropout_p)
         self.gru = nn.GRU(self.hidden_size, self.hidden_size)
         self.out = nn.Linear(self.hidden_size, self.output_size)
-        # self.ff = nn.Linear(hidden_size * 2, hidden_size)
-
-    # def init_hidden(self, hidden):
-    #     hidden = hidden.view(1,1,-1)
-    #     return self.ff(hidden)
 
     def forward(self, input, hidden, encoder_outputs):
         embedded = self.embedding(input).view(1, 1, -1)
@@ -151,8 +145,6 @@ class AttnDecoderRNN(nn.Module):
 
         attn_weights = F.softmax(
             self.attn(torch.cat((embedded[0], hidden[0]), 1)) )
-        # attn_applied = torch.bmm(encoder_outputs.unsqueeze(0),
-        #                          attn_weights.unsqueeze(2))
         attn_applied = torch.bmm(attn_weights.unsqueeze(0),
                                  encoder_outputs.unsqueeze(0))
 
@@ -204,7 +196,6 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     input_length = input_variable.size()[0]
     target_length = target_variable.size()[0]
 
-    # encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size * 2))
     encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
     encoder_outputs = encoder_outputs.cuda() if use_cuda else encoder_outputs
 
@@ -218,7 +209,6 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     decoder_input = Variable(torch.LongTensor([[SOS_token]]))
     decoder_input = decoder_input.cuda() if use_cuda else decoder_input
 
-    # decoder_hidden = decoder.init_hidden(encoder_hidden)
     decoder_hidden = encoder_hidden
 
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
@@ -275,9 +265,7 @@ def timeSince(since, percent):
 
 def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, learning_rate=0.01):
     start = time.time()
-    # plot_losses = []
     print_loss_total = 0  # Reset every print_every
-    # plot_loss_total = 0  # Reset every plot_every
 
     if os.path.exists("saved_models/encoder_" + MODEL_VERSION):
         encoder = torch.load("saved_models/encoder_" + MODEL_VERSION)
@@ -298,7 +286,6 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
         loss = train(input_variable, target_variable, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
         print_loss_total += loss
-        # plot_loss_total += loss
 
         if iter % print_every == 0:
             print_loss_avg = print_loss_total / print_every
@@ -306,17 +293,10 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
             print('%s (%d %d%%) %.4f' % (timeSince(start, iter / n_iters),
                                          iter, iter / n_iters * 100, print_loss_avg))
 
-        # if iter % plot_every == 0:
-        #     plot_loss_avg = plot_loss_total / plot_every
-        #     plot_losses.append(plot_loss_avg)
-        #     plot_loss_total = 0
-
     with open("saved_models/encoder_" + MODEL_VERSION, "wb") as f:
        torch.save(encoder, f)
     with open("saved_models/decoder_" + MODEL_VERSION, "wb") as f:
        torch.save(decoder, f)
-
-    # showPlot(plot_losses)
 
 
 import matplotlib.pyplot as plt
@@ -398,12 +378,5 @@ if use_cuda:
     attn_decoder1 = attn_decoder1.cuda()
 
 trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=100, learning_rate=LEARNING_RATE)
-
-# d_w, d_a = evaluate(encoder=encoder1, 
-#                     decoder=attn_decoder1, 
-#                     sentence=TEST_SENTENCE, 
-#                     max_length=MAX_LENGTH)
-# print('decoded sentence:', d_w)
-# print('decoded attention:', d_a)
 
 

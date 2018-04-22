@@ -49,7 +49,7 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
+    lines = open('data/processed/test-{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize
@@ -81,7 +81,6 @@ def prepareData(lang1, lang2, reverse=False):
     return input_lang, output_lang, pairs
 
 input_lang, output_lang, pairs = prepareData('in', 'out', True)
-print(random.choice(pairs))
 
 
 with open('data/embedding_raw.pkl', 'rb') as handle:
@@ -108,7 +107,6 @@ class EncoderRNN(nn.Module):
         self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
         self.embedding.weight.requires_grad = False
 
-        # self.gru = nn.GRU(hidden_size, hidden_size)
         self.gru = getattr(nn, model_type)(hidden_size, hidden_size, bidirectional=False)
 
     def forward(self, input, hidden):
@@ -139,11 +137,6 @@ class AttnDecoderRNN(nn.Module):
         self.dropout = nn.Dropout(self.dropout_p)
         self.gru = nn.GRU(self.hidden_size, self.hidden_size)
         self.out = nn.Linear(self.hidden_size, self.output_size)
-        # self.ff = nn.Linear(hidden_size * 2, hidden_size)
-
-    # def init_hidden(self, hidden):
-    #     hidden = hidden.view(1,1,-1)
-    #     return self.ff(hidden)
 
     def forward(self, input, hidden, encoder_outputs):
         embedded = self.embedding(input).view(1, 1, -1)
@@ -151,8 +144,7 @@ class AttnDecoderRNN(nn.Module):
 
         attn_weights = F.softmax(
             self.attn(torch.cat((embedded[0], hidden[0]), 1)) )
-        # attn_applied = torch.bmm(encoder_outputs.unsqueeze(0),
-        #                          attn_weights.unsqueeze(2))
+
         attn_applied = torch.bmm(attn_weights.unsqueeze(0),
                                  encoder_outputs.unsqueeze(0))
 
@@ -194,7 +186,7 @@ def variablesFromPair(pair):
 
 teacher_forcing_ratio = 0.5
 
-
+'''
 def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH):
     encoder_hidden = encoder.initHidden()
 
@@ -204,7 +196,6 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     input_length = input_variable.size()[0]
     target_length = target_variable.size()[0]
 
-    # encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size * 2))
     encoder_outputs = Variable(torch.zeros(max_length, encoder.hidden_size))
     encoder_outputs = encoder_outputs.cuda() if use_cuda else encoder_outputs
 
@@ -331,7 +322,7 @@ def showPlot(points):
     ax.yaxis.set_major_locator(loc)
     plt.plot(points)
     fig.savefig('loss.png')
-
+'''
 
 def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
 
@@ -398,11 +389,6 @@ if use_cuda:
     attn_decoder1 = attn_decoder1.cuda()
 
 
-d_w, d_a = evaluate(encoder=encoder1, 
-                    decoder=attn_decoder1, 
-                    sentence=TEST_SENTENCE, 
-                    max_length=MAX_LENGTH)
-print('decoded sentence:', d_w)
-print('decoded attention:', d_a)
+evaluateRandomly(encoder=encoder1, decoder=attn_decoder1, n=10)
 
 
