@@ -42,3 +42,10 @@ The performances of our sequence-to-seqeuence model on various datasets of SCAN 
 |Addprim_jump | Glove 6b 50d | 40 | GRU | Attn-GRU | 0.0405 |
 |Addprim_jump | None | 80 | GRU | Attn-GRU | Still Running on Prince... |
 |Addprim_jump | Glove 6b 50d | 80 | GRU | Attn-GRU | Still Running on Prince... |
+
+
+## Appendix
+
+### Sequence Lengths Distribution
+![hist_jump_in](plots/hist_jump_in.png)
+![hist_jump_out](plots/hist_jump_out.png)
