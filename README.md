@@ -8,7 +8,9 @@ This is an experiment of compositional learning and zero-shot generalization on 
 ## Usage
 1. Download data in the [SCAN task](https://github.com/brendenlake/SCAN);
 2. Process the data with **data_process\*.py**;
-3. Run the model with **\*s2s_[model].py** `[options]`.
+3. Run the model with **\*s2s_[model].py** `[options]`.  
+
+**NB:** We are using pre-trained embedding weights from [GloVe 6B 50D](https://nlp.stanford.edu/projects/glove/).
 
 ## Results
 The performances of our sequence-to-seqeuence model on various datasets of SCAN tasks are as follows.
