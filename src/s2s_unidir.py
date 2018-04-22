@@ -21,6 +21,7 @@ print("GPU availability is:", use_cuda)
 
 SOS_token = 0
 EOS_token = 1
+hidden_size = 50
 
 class Lang:
     def __init__(self, name):
@@ -99,7 +100,7 @@ for k, v in input_lang.index2word.items():
 
 ## Language Model
 class EncoderRNN(nn.Module):
-    def __init__(self, input_size, hidden_size, pretrained_emb=pretrained_emb, model_type='GRU'):
+    def __init__(self, input_size, hidden_size, pretrained_emb, model_type='GRU'):
         super(EncoderRNN, self).__init__()
         self.hidden_size = hidden_size
 
@@ -320,7 +321,6 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-import numpy as np
 
 
 def showPlot(points):
@@ -389,8 +389,7 @@ def evaluateRandomly(encoder, decoder, n=10):
 
 
 
-hidden_size = 50
-encoder1 = EncoderRNN(input_lang.n_words, hidden_size)
+encoder1 = EncoderRNN(input_lang.n_words, hidden_size, pretrained_emb)
 attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1)
 
 
@@ -398,7 +397,7 @@ if use_cuda:
     encoder1 = encoder1.cuda()
     attn_decoder1 = attn_decoder1.cuda()
 
-trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=5, learning_rate=LEARNING_RATE)
+trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=100, learning_rate=LEARNING_RATE)
 
 # d_w, d_a = evaluate(encoder=encoder1, 
 #                     decoder=attn_decoder1, 
