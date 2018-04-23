@@ -21,7 +21,8 @@ print("GPU availability is:", use_cuda)
 
 SOS_token = 0
 EOS_token = 1
-hidden_size = 50
+hidden_size = HIDDEN_SIZE
+teacher_forcing_ratio = TEACHER_FORCING_RATIO
 
 class Lang:
     def __init__(self, name):
@@ -84,13 +85,13 @@ input_lang, output_lang, pairs = prepareData('in', 'out', True)
 print(random.choice(pairs))
 
 
-with open('data/embedding_raw.pkl', 'rb') as handle:
+with open('data/emb_pretrained/embedding_raw{}d.pkl'.format(hidden_size), 'rb') as handle:
     b = pickle.load(handle)
 
-pretrained_emb = np.zeros((15, 50))
+pretrained_emb = np.zeros((15, hidden_size))
 for k, v in input_lang.index2word.items():
     if v == 'SOS':
-        pretrained_emb[k] = np.zeros(50)
+        pretrained_emb[k] = np.zeros(hidden_size)
     elif v == 'EOS':
         pretrained_emb[k] = b['.']
     else:
@@ -184,8 +185,8 @@ def variablesFromPair(pair):
     target_variable = variableFromSentence(output_lang, pair[1])
     return (input_variable, target_variable)
 
-teacher_forcing_ratio = 0.5
 
+# teacher_forcing_ratio = 0.5
 
 def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH):
     encoder_hidden = encoder.initHidden()
@@ -377,6 +378,6 @@ if use_cuda:
     encoder1 = encoder1.cuda()
     attn_decoder1 = attn_decoder1.cuda()
 
-trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=100, learning_rate=LEARNING_RATE)
+trainIters(encoder1, attn_decoder1, n_iters=N_ITERS, print_every=1000, learning_rate=LEARNING_RATE)
 
 
