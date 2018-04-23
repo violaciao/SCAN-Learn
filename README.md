@@ -6,10 +6,9 @@ This is an experiment of compositional learning and zero-shot generalization on 
 - pytorch 0.3+
 
 ## Modifications
-- Fix the Max length as the longest sentence's length or three fourth quantile max length;
 - Use GloVe pretrained embeddings with different dimensions;
 - Deepen the Encoder-Decoder model structure;
-- Use MSE instead of NLL, for accuracy metrics is defined as: accurate only if the output is identical to the ground truth.
+- Use MSE as an alternative of NLL, for accuracy metrics is defined as: accurate only if the output is identical to the ground truth.
 
 ## Data
 [**SCAN**](https://github.com/brendenlake/SCAN) consists of a set of commands (see table) and their corresponding action sequences. These are the actions an agent should perform to execute the commands successfully. The commands and actions are defined compositionally based on primitives ("jump", "walk", "run", "turn left", etc.) and modifiers such as "twice", "thrice", "and", "after", "around left", etc. Here are some examples.
