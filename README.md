@@ -35,17 +35,13 @@ This is an experiment of compositional learning and zero-shot generalization on 
 ## Results
 The performances of our sequence-to-seqeuence model on various datasets of SCAN tasks are as follows.
 
-| Task | Prior | Max SeqLen | Encoder | Decoder | Average Loss |
+| Task | Prior | Hidden Units | Encoder | Decoder | Average Loss |
 |:--------:|:---------:|:---------:|:----------:|:----------:|:----------:|
-|Addprim_jump | None | 10 | GRU | Attn-GRU | Still Running on Prince... |
-|Addprim_jump | Glove 6b 50d  | 10 | GRU | Attn-GRU | 0.0812 |
-|Addprim_jump | Glove 6b 100d  | 10 | GRU | Attn-GRU | Still Running on Prince... |
 |Addprim_jump | None | 50 | GRU | Attn-GRU | Still Running on Prince... |
-|Addprim_jump | Glove 6b 50d | 40* | GRU | Attn-GRU | 0.0405 |
-|Addprim_jump | Glove 6b 100d  | 50 | GRU | Attn-GRU | Still Running on Prince... |
-|Addprim_jump | None | 100 | GRU | Attn-GRU | Still Running on Prince... |
-|Addprim_jump | Glove 6b 50d | 100 | GRU | Attn-GRU | Still Running on Prince... |
+|Addprim_jump | Glove 6b 50d | 50 | GRU | Attn-GRU | 0.0142 |
 |Addprim_jump | Glove 6b 100d  | 100 | GRU | Attn-GRU | Still Running on Prince... |
+|Addprim_jump | Glove 6b 200d  | 200 | GRU | Attn-GRU | Still Running on Prince... |
+|Addprim_jump | Glove 6b 300d  | 300 | GRU | Attn-GRU | Still Running on Prince... |
 
 <!-- |Simple Split | None | 10 | GRU | Attn-GRU | 0.0002 |
 |Simple Split | None | 50 | GRU | Attn-GRU | Still Running on Prince... |
