@@ -55,18 +55,17 @@ The performances of our sequence-to-seqeuence model on various datasets of SCAN 
 ## Embedding Correlations
 
 1. Glove 300D Embedding  
-    ![corr_GloVe_6B300D](plots/cosine_sim_embed300d.png)  
-    *Pre-trained Glove 300D Embedding Cosine Similarity Matrix*
-
-    ![tsne_GloVe_6B300D](plots/tsne_embed300d.png)  
-    *Pre-trained Glove 300D Embedding T-SNE Matrix*
+> *Pre-trained Glove 300D Embedding Cosine Similarity Matrix*  
+![corr_GloVe_6B300D](plots/cosine_sim_embed300d.png)     
+> *Pre-trained Glove 300D Embedding T-SNE Matrix*  
+![tsne_GloVe_6B300D](plots/tsne_embed300d.png)  
 
 2. Google News 300 Negative Embedding  
-    ![corr_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)  
-    *Pre-trained Google 300D Embedding Cosine Similarity Matrix*
+> *Pre-trained Google 300D Embedding Cosine Similarity Matrix*  
+![corr_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)   
+> *Pre-trained Google 300D Embedding T-SNE Matrix*  
+![tsne_GoogleNews300Negative](plots/tsne_embed_ggl300d.png)  
 
-    ![tsne_GoogleNews300Negative](plots/tsne_embed_ggl300d.png)  
-    *Pre-trained Google 300D Embedding T-SNE Matrix*
 ---
 ## Appendix
 
