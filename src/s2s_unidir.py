@@ -84,16 +84,21 @@ def prepareData(lang1, lang2, reverse=False):
 input_lang, output_lang, pairs = prepareData('in', 'out', True)
 print(random.choice(pairs))
 
-
-with open('data/emb_pretrained/embedding_raw{}d.pkl'.format(hidden_size), 'rb') as handle:
-    b = pickle.load(handle)
+if EMBEDDEING_SOURCE == 'google':
+    with open('data/emb_pretrained/embedding_GoogleNews300Negative.pkl'.format(hidden_size), 'rb') as handle:
+        b = pickle.load(handle)
+else:
+    with open('data/emb_pretrained/embedding_raw{}d.pkl'.format(hidden_size), 'rb') as handle:
+        b = pickle.load(handle)
 
 pretrained_emb = np.zeros((15, hidden_size))
 for k, v in input_lang.index2word.items():
     if v == 'SOS':
         pretrained_emb[k] = np.zeros(hidden_size)
-    elif v == 'EOS':
+    elif (v == 'EOS') and (EMBEDDEING_SOURCE != 'google'):
         pretrained_emb[k] = b['.']
+    elif (v == 'and') and (EMBEDDEING_SOURCE == 'google'):
+        pretrained_emb[k] = b['AND']
     else:
         pretrained_emb[k] = b[v]
 
