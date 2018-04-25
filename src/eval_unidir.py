@@ -109,10 +109,11 @@ class EncoderRNN(nn.Module):
     def __init__(self, input_size, hidden_size, pretrained_emb, model_type='GRU'):
         super(EncoderRNN, self).__init__()
         self.hidden_size = hidden_size
-
         self.embedding = nn.Embedding(input_size, hidden_size)
-        self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
-        self.embedding.weight.requires_grad = False
+
+        if EMBEDDEING_PRETRAINED:
+            self.embedding.weight.data.copy_(torch.from_numpy(pretrained_emb))
+            self.embedding.weight.requires_grad = WEIGHT_UPDATE
 
         self.gru = getattr(nn, model_type)(hidden_size, hidden_size, bidirectional=False)
 
