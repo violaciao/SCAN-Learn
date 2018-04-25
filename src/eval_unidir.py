@@ -50,7 +50,7 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('data/processed/train-{}_{}-{}.txt'.format(TASK_NAME, lang1, lang2), encoding='utf-8').\
+    lines = open('data/processed/{}-{}_{}-{}.txt'.format(EVAL_TRNorTST, TASK_NAME, lang1, lang2), encoding='utf-8').\
         read().strip().split('\n')
 
     # Split every line into pairs and normalize
@@ -90,7 +90,7 @@ if EMBEDDEING_SOURCE == 'google':
 else:
     with open('data/emb_pretrained/embedding_raw{}d.pkl'.format(hidden_size), 'rb') as handle:
         b = pickle.load(handle)
-        
+
 pretrained_emb = np.zeros((15, hidden_size))
 for k, v in input_lang.index2word.items():
     if v == 'SOS':
