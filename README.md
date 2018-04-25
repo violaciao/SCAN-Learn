@@ -53,10 +53,10 @@ The performances of our sequence-to-seqeuence model on various datasets of SCAN 
 |---|---|---|---|---|--- | -->
 
 ## Pearson's Correlation
-![embedding_GloVe_6B300D](plots/cosine_sim_embed300d.png)
+![embedding_GloVe_6B300D](plots/cosine_sim_embed300d.png)  
 *Pre-trained Glove 300D Embedding Cosine Similarity Matrix*
 
-![embedding_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)
+![embedding_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)  
 *Pre-trained Google 300D Embedding Cosine Similarity Matrix*
 
 ---
