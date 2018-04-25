@@ -52,13 +52,21 @@ The performances of our sequence-to-seqeuence model on various datasets of SCAN 
 |Simple Split | Glove 6b 50d | 50 | GRU | Attn-GRU | 0.0921 |
 |---|---|---|---|---|--- | -->
 
-## Pearson's Correlation
-![embedding_GloVe_6B300D](plots/cosine_sim_embed300d.png)  
-*Pre-trained Glove 300D Embedding Cosine Similarity Matrix*
+## Embedding Correlations
 
-![embedding_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)  
-*Pre-trained Google 300D Embedding Cosine Similarity Matrix*
+1. Glove 300D Embedding  
+    ![corr_GloVe_6B300D](plots/cosine_sim_embed300d.png)  
+    *Pre-trained Glove 300D Embedding Cosine Similarity Matrix*
 
+    ![tsne_GloVe_6B300D](plots/tsne_embed300d.png)  
+    *Pre-trained Glove 300D Embedding T-SNE Matrix*
+
+2. Google News 300 Negative Embedding  
+    ![corr_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)  
+    *Pre-trained Google 300D Embedding Cosine Similarity Matrix*
+
+    ![tsne_GoogleNews300Negative](plots/tsne_embed_ggl300d.png)  
+    *Pre-trained Google 300D Embedding T-SNE Matrix*
 ---
 ## Appendix
 
