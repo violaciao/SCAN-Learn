@@ -40,12 +40,12 @@ The results strongly support **the vital role of  compositionality** in zero-sho
 
 | Prior | Hidden Units | Encoder | Decoder | Training Loss | Test Accuracy |
 |:--------:|:---------:|:---------:|:----------:|:----------:|:----------:|
-| None | 50 | GRU | Attn-GRU | Still Running on Prince... | ... |
+| None | 50 | GRU | Attn-GRU | 0.0587 | 1.20% |
 | Glove 6b 50d | 50 | GRU | Attn-GRU | 0.0142 | .. |
 | Glove 6b 100d  | 100 | GRU | Attn-GRU | 0.2053 | .. |
 | Glove 6b 200d  | 200 | GRU | Attn-GRU | 1.7533 | .. |
-| Glove 6b 300d  | 300 | GRU | Attn-GRU | 0.0250 | **94%**
-| Google News 300d  | 300 | GRU | Attn-GRU | Running on Prince... | .. |
+| Glove 6b 300d  | 300 | GRU | Attn-GRU | 0.0250 | **94.00%**
+| Google News 300d  | 300 | GRU | Attn-GRU | 0.0156 | 90.40% |
 
 
 ## Embedding Correlations
