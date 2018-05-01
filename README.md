@@ -50,17 +50,41 @@ The results strongly support **the vital role of  compositionality** in zero-sho
 
 ## Embedding Correlations
 
-1. Glove 300D Embedding  
-> **Pre-trained Glove 300D Embedding Cosine Similarity Matrix**
-![corr_GloVe_6B300D](plots/cosine_sim_embed300d.png)     
-> **Pre-trained Glove 300D Embedding T-SNE**  
-![tsne_GloVe_6B300D](plots/tsne_embed_glove300d.png)  
+#### 1. Glove 50D Embedding  
 
-2. Google News 300 Negative Embedding  
-> **Pre-trained Google 300D Embedding Cosine Similarity Matrix**  
-![corr_GoogleNews300Negative](plots/cosine_sim_embed_ggl300d.png)   
-> **Pre-trained Google 300D Embedding T-SNE**  
-![tsne_GoogleNews300Negative](plots/tsne_embed_gg300d.png)  
+Cosine Similarity (GloVe 50)   |  T-SNE  (GloVe 50)
+:-------------------------:|:-------------------------:
+<img src="plots/cosine_sim_embed50d.png" width="280"/> | <img src="plots/tsne_embed_glove50d.png" width="250"/>
+
+#### 2. Glove 100D Embedding  
+
+Cosine Similarity (GloVe 100)   |  T-SNE  (GloVe 100)
+:-------------------------:|:-------------------------:
+<img src="plots/cosine_sim_embed100d.png" width="280"/> | <img src="plots/tsne_embed_glove100d.png" width="250"/>
+
+#### 3. Glove 200D Embedding  
+
+Cosine Similarity (GloVe 200)   |  T-SNE  (GloVe 200)
+:-------------------------:|:-------------------------:
+<img src="plots/cosine_sim_embed200d.png" width="280"/> | <img src="plots/tsne_embed_glove200d.png" width="250"/>
+
+
+#### 4. Glove 300D Embedding  
+
+Cosine Similarity (GloVe 300)   |  T-SNE  (GloVe 300)
+:-------------------------:|:-------------------------:
+<img src="plots/cosine_sim_embed300d.png" width="280"/> | <img src="plots/tsne_embed_glove300d.png" width="250"/>
+
+
+#### 5. Google News 300 Negative Embedding  
+
+Cosine Similarity (Google 300)   |  T-SNE  (Google 300)
+:-------------------------:|:-------------------------:
+<img src="plots/cosine_sim_embed_ggl300d.png" width="280"/> | <img src="plots/tsne_embed_gg300d.png" width="250"/>
+
+
+
+
 
 ---
 ## Appendix
