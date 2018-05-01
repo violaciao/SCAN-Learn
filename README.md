@@ -54,33 +54,33 @@ The results strongly support **the vital role of  compositionality** in zero-sho
 
 Cosine Similarity (GloVe 50)   |  T-SNE  (GloVe 50)
 :-------------------------:|:-------------------------:
-<img src="plots/cosine_sim_embed50d.png" width="280"/> | <img src="plots/tsne_embed_glove50d.png" width="250"/>
+<img src="plots/cosine_sim_embed50d.png" width="480"/> | <img src="plots/tsne_embed_glove50d.png" width="450"/>
 
 #### 2. Glove 100D Embedding  
 
 Cosine Similarity (GloVe 100)   |  T-SNE  (GloVe 100)
 :-------------------------:|:-------------------------:
-<img src="plots/cosine_sim_embed100d.png" width="280"/> | <img src="plots/tsne_embed_glove100d.png" width="250"/>
+<img src="plots/cosine_sim_embed100d.png" width="480"/> | <img src="plots/tsne_embed_glove100d.png" width="450"/>
 
 #### 3. Glove 200D Embedding  
 
 Cosine Similarity (GloVe 200)   |  T-SNE  (GloVe 200)
 :-------------------------:|:-------------------------:
-<img src="plots/cosine_sim_embed200d.png" width="280"/> | <img src="plots/tsne_embed_glove200d.png" width="250"/>
+<img src="plots/cosine_sim_embed200d.png" width="480"/> | <img src="plots/tsne_embed_glove200d.png" width="450"/>
 
 
 #### 4. Glove 300D Embedding  
 
 Cosine Similarity (GloVe 300)   |  T-SNE  (GloVe 300)
 :-------------------------:|:-------------------------:
-<img src="plots/cosine_sim_embed300d.png" width="280"/> | <img src="plots/tsne_embed_glove300d.png" width="250"/>
+<img src="plots/cosine_sim_embed300d.png" width="480"/> | <img src="plots/tsne_embed_glove300d.png" width="450"/>
 
 
 #### 5. Google News 300 Negative Embedding  
 
 Cosine Similarity (Google 300)   |  T-SNE  (Google 300)
 :-------------------------:|:-------------------------:
-<img src="plots/cosine_sim_embed_ggl300d.png" width="280"/> | <img src="plots/tsne_embed_gg300d.png" width="250"/>
+<img src="plots/cosine_sim_embed_ggl300d.png" width="480"/> | <img src="plots/tsne_embed_gg300d.png" width="450"/>
 
 
 
